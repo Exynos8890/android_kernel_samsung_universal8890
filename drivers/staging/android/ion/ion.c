@@ -1083,10 +1083,17 @@ static int ion_debug_client_show(struct seq_file *s, void *unused)
 		return -EINVAL;
 	}
 
+#ifdef CONFIG_ION_EXYNOS_STAT_LOG
 	seq_printf(s, "%16.s %4.s %16.s %4.s %10.s %8.s %9.s\n",
 		   "task", "pid", "thread", "tid", "size", "# procs", "flag");
 	seq_printf(s, "----------------------------------------------"
 			"--------------------------------------------\n");
+#else
+	seq_printf(s, "%16.s %4.s %10.s %8.s %9.s\n",
+		   "task", "pid", "size", "# procs", "flag");
+	seq_printf(s, "----------------------------------------------"
+			"--------------------------------------------\n");
+#endif
 
 	mutex_lock(&client->lock);
 	for (n = rb_first(&client->handles); n; n = rb_next(n)) {
