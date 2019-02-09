@@ -147,6 +147,34 @@ extern struct decon_bts2 decon_bts2_control;
 #define call_init_ops(q, op, args...)				\
 		(((q)->bts_init_ops->op) ? ((q)->bts_init_ops->op(args)) : 0)
 
+/* declare these structs if decon event logging is disabled */
+#ifndef CONFIG_DECON_EVENT_LOG
+struct esd_protect {
+	u32 pcd_irq;
+	u32 err_irq;
+	u32 disp_det_irq;
+	u32 pcd_gpio;
+	u32 disp_det_gpio;
+	struct workqueue_struct *esd_wq;
+	struct work_struct esd_work;
+	u32	queuework_pending;
+	int irq_disable;
+	disp_esd_irq_t irq_type;
+	ktime_t when_irq_enable;
+};
+
+struct disp_ss_size_info {
+	u32 w_in;
+	u32 h_in;
+	u32 w_out;
+	u32 h_out;
+};
+
+struct disp_ss_size_err_info {
+	ktime_t time;
+	struct disp_ss_size_info info;
+};
+#endif
 
 /*
  * DECON_STATE_ON : disp power on, decon/dsim clock on & lcd on
